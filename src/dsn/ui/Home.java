@@ -24,12 +24,16 @@ public class Home {
     private JButton profileSaveButton;
     private JButton profileDeleteButton;
     private JLabel profileName;
+    private JTabbedPane tabbedPane1;
+    private JPanel friendsRequestsPanel;
+    private final JFrame frame;
 
     public void updateCallback(int getSize) {
-
+        getFriends();
+        getFriendsRequests();
     }
 
-    private void getFriends(JFrame frame) {
+    private void getFriends() {
         long count = loadFriends();
         if (count > 0) {
             long[] ids = getFriendsIds();
@@ -58,7 +62,31 @@ public class Home {
         }
     }
 
+    private void getFriendsRequests() {
+        String[] usernames = CoreManager.getFriendsRequests();
+        if (usernames.length > 0) {
+            friendsRequestsPanel.removeAll();
+            for (String username : usernames) {
+                JPanel panel = new JPanel();
+                JButton add = new JButton();
+                JButton revoke = new JButton();
+
+                add.setText("Добавить");
+                revoke.setText("Отклонить");
+//                chat.addActionListener(e -> new Chat(frame, friend));
+                panel.add(new JLabel(username));
+                panel.add(add);
+                panel.add(revoke);
+
+                friendsRequestsPanel.add(panel);
+                friendsRequestsPanel.revalidate();
+            }
+            friendsRequestsPanel.repaint();
+        }
+    }
+
     public Home(JFrame frame) {
+        this.frame = frame;
         frame.getContentPane().removeAll();
         frame.getContentPane().add(mainPanel);
         frame.setVisible(true);
@@ -72,6 +100,7 @@ public class Home {
         newsPanel.setLayout(new BoxLayout(newsPanel, BoxLayout.Y_AXIS));
         chatsPanel.setLayout(new BoxLayout(chatsPanel, BoxLayout.Y_AXIS));
         friendsPanel.setLayout(new BoxLayout(friendsPanel, BoxLayout.Y_AXIS));
+        friendsRequestsPanel.setLayout(new BoxLayout(friendsRequestsPanel, BoxLayout.Y_AXIS));
 
         Main.profile = new User(0, getProfileName(), getProfileAddress(), getProfilePublicKey());
         if (Main.profile.address == null) {
@@ -86,14 +115,15 @@ public class Home {
             Main.serverRunning = true;
         }
 
-        getFriends(frame);
+        getFriends();
+        getFriendsRequests();
 //        connectToFriends();
 
         addFriendButton.addActionListener(e -> {
             AddFriend dialog = new AddFriend();
             dialog.pack();
             dialog.setVisible(true);
-            getFriends(frame);
+            getFriends();
         });
         showPublicKeyButton.addActionListener(e -> {
             ShowPublicKey dialog = new ShowPublicKey(Main.profile.publicKey);

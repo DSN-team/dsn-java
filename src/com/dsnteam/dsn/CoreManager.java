@@ -11,19 +11,31 @@ public class CoreManager {
 
     public static native void initDB();
 
-    public static void getUpdateCallBack(int getSize, int chatID) {
-        System.out.print("update call back chatID ");
-        System.out.println(chatID);
+    public static void getUpdateCallBack(int getSize, int id) {
+        Main.callBackBuffer.position(0);
+        byte requestType = Main.callBackBuffer.get(0);
+        switch (requestType) {
+            case 0 -> {
+                System.out.print("message update call back id ");
+                System.out.println(id);
 
-        if (Main.chatID == chatID) {
-            System.out.println("opened chat callback");
-            Main.chat.updateCallback(getSize);
-        } else {
-            System.out.println("closed chat callback");
-            System.out.print("opened chat id: ");
-            System.out.println(Main.chatID);
+                if (Main.chatID == id) {
+                    System.out.println("opened chat callback");
+                    Main.chat.updateCallback(getSize);
+                } else {
+                    System.out.println("closed chat callback");
+                    System.out.print("opened chat id: ");
+                    System.out.println(Main.chatID);
+                }
+            }
+            case 2 -> {
+                System.out.print("message update call back id ");
+                System.out.println(id);
+                Main.home.updateCallback(getSize);
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + requestType);
         }
-
+        Main.callBackBuffer.position(1);
     }
 
     public static native void setCallBackBuffer(Buffer callbackBuffer);
@@ -42,7 +54,7 @@ public class CoreManager {
 
     public static native String[] getProfilesNames();
 
-    public static native void addFriend(String username, String address, String publicKey);
+    public static native void addFriend(String key);
 
     public static native String getProfileName();
 
@@ -63,6 +75,8 @@ public class CoreManager {
     public static native void connectToFriends();
 
     public static native void connectToFriend(long id);
+
+    public static native String[] getFriendsRequests();
 
     public static void loadLibrary() {
         File cur = new File("libs");

@@ -9,7 +9,7 @@ public class AddFriend extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField addressText;
+    private JTextField keyText;
     private JTextArea publicKeyText;
     private JTextField friendNameText;
 
@@ -36,7 +36,7 @@ public class AddFriend extends JDialog {
 
     private void onOK() {
         // add your code here
-        addFriend(friendNameText.getText(), addressText.getText(), publicKeyText.getText());
+        addFriend(keyText.getText());
         dispose();
     }
 

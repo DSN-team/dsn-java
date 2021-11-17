@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="data">
   <database-model serializer="dbm" dbms="SQLITE" family-id="SQLITE" format-version="4.23">
-    <root id="1"/>
+    <root id="1">
+      <ServerVersion>3.34.0</ServerVersion>
+    </root>
     <schema id="2" parent="1" name="main">
       <Current>1</Current>
     </schema>
@@ -1398,31 +1400,36 @@
       <NotNull>1</NotNull>
       <SequenceIdentity>null</SequenceIdentity>
     </column>
-    <column id="509" parent="174" name="username">
+    <column id="509" parent="174" name="profile_id">
       <Position>2</Position>
-      <DataType>text|0s</DataType>
-    </column>
-    <column id="510" parent="174" name="address">
-      <Position>3</Position>
-      <DataType>text|0s</DataType>
+      <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="511" parent="174" name="public_key">
+    <column id="510" parent="174" name="username">
+      <Position>3</Position>
+      <DataType>text|0s</DataType>
+    </column>
+    <column id="511" parent="174" name="address">
       <Position>4</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="512" parent="174" name="is_friend">
+    <column id="512" parent="174" name="public_key">
       <Position>5</Position>
+      <DataType>text|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="513" parent="174" name="is_friend">
+      <Position>6</Position>
       <DataType>integer|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
     </column>
-    <index id="513" parent="174" name="users_id_uindex">
+    <index id="514" parent="174" name="users_id_uindex">
       <ColNames>id</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <key id="514" parent="174" name="users_pk">
+    <key id="515" parent="174" name="users_pk">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>users_id_uindex</UnderlyingIndexName>
