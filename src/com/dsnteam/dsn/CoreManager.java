@@ -7,7 +7,17 @@ import java.nio.Buffer;
 
 import static java.lang.System.mapLibraryName;
 
+
 public class CoreManager {
+    public enum CallBackType {
+        messageRequest((byte) 0),
+        friendRequest((byte) 1);
+        final byte type;
+
+        CallBackType(byte type) {
+            this.type = type;
+        }
+    }
 
     public static native void initDB();
 
