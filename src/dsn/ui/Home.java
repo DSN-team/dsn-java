@@ -26,6 +26,7 @@ public class Home {
     private JLabel profileName;
     private JTabbedPane tabbedPane1;
     private JPanel friendsRequestsPanel;
+    private JTabbedPane tabbedPane2;
     private final JFrame frame;
 
     public void updateCallback(int getSize) {
