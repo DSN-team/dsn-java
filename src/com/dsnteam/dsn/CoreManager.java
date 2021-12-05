@@ -9,15 +9,6 @@ import static java.lang.System.mapLibraryName;
 
 
 public class CoreManager {
-    public enum CallBackType {
-        messageRequest((byte) 0),
-        friendRequest((byte) 1);
-        final byte type;
-
-        CallBackType(byte type) {
-            this.type = type;
-        }
-    }
 
     public static native void initDB();
 
@@ -25,7 +16,7 @@ public class CoreManager {
         Main.callBackBuffer.position(0);
         byte requestType = Main.callBackBuffer.get(0);
         switch (requestType) {
-            case 0 -> {
+            case 1 -> { //request data
                 System.out.print("message update call back id ");
                 System.out.println(id);
 
@@ -38,8 +29,8 @@ public class CoreManager {
                     System.out.println(Main.chatID);
                 }
             }
-            case 2 -> {
-                System.out.print("message update call back id ");
+            case 3 -> { // request network
+                System.out.print("requests update call back id ");
                 System.out.println(id);
                 Main.home.updateCallback(getSize);
             }
@@ -86,7 +77,15 @@ public class CoreManager {
 
     public static native void connectToFriend(long id);
 
-    public static native String[] getFriendsRequests();
+    public static native String[] getFriendsRequestsIn();
+
+    public static native String[] getFriendsRequestsOut();
+
+    public static native void acceptFriendRequest(long pos);
+
+    public static native void rejectFriendRequest(long pos);
+
+    public static native void deleteFriendRequest(long pos);
 
     public static void loadLibrary() {
         File cur = new File("libs");

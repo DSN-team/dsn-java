@@ -25,13 +25,14 @@ public class Home {
     private JButton profileDeleteButton;
     private JLabel profileName;
     private JTabbedPane tabbedPane1;
-    private JPanel friendsRequestsPanel;
+    private JPanel friendsRequestsInPanel;
     private JTabbedPane tabbedPane2;
+    private JPanel friendsRequestsOutPanel;
     private final JFrame frame;
 
     public void updateCallback(int getSize) {
         getFriends();
-        getFriendsRequests();
+        getFriendsRequestsIn();
     }
 
     private void getFriends() {
@@ -63,26 +64,66 @@ public class Home {
         }
     }
 
-    private void getFriendsRequests() {
-        String[] usernames = CoreManager.getFriendsRequests();
+    private void getFriendsRequestsIn() {
+        String[] usernames = CoreManager.getFriendsRequestsIn();
         if (usernames.length > 0) {
-            friendsRequestsPanel.removeAll();
-            for (String username : usernames) {
+            friendsRequestsInPanel.removeAll();
+            for (int i = 0; i < usernames.length; i++) {
+                String username = usernames[i];
                 JPanel panel = new JPanel();
                 JButton add = new JButton();
-                JButton revoke = new JButton();
+                JButton reject = new JButton();
+                int pos = i;
 
                 add.setText("Добавить");
-                revoke.setText("Отклонить");
-//                chat.addActionListener(e -> new Chat(frame, friend));
+                add.addActionListener(e -> {
+                    System.out.print("Accept: ");
+                    System.out.println(pos);
+                    acceptFriendRequest(pos);
+                    getFriendsRequestsIn();
+                    getFriends();
+                });
+                reject.setText("Отклонить");
+                reject.addActionListener(e -> {
+                    System.out.print("Reject: ");
+                    System.out.println(pos);
+                    rejectFriendRequest(pos);
+                    getFriendsRequestsIn();
+                });
                 panel.add(new JLabel(username));
                 panel.add(add);
-                panel.add(revoke);
+                panel.add(reject);
 
-                friendsRequestsPanel.add(panel);
-                friendsRequestsPanel.revalidate();
+                friendsRequestsInPanel.add(panel);
+                friendsRequestsInPanel.revalidate();
             }
-            friendsRequestsPanel.repaint();
+            friendsRequestsInPanel.repaint();
+        }
+    }
+
+    private void getFriendsRequestsOut() {
+        String[] usernames = CoreManager.getFriendsRequestsOut();
+        if (usernames.length > 0) {
+            friendsRequestsOutPanel.removeAll();
+            for (int i = 0; i < usernames.length; i++) {
+                String username = usernames[i];
+                JPanel panel = new JPanel();
+                JButton cancel = new JButton();
+                int pos = i;
+                cancel.setText("Отменить");
+                cancel.addActionListener(e -> {
+                    System.out.print("Cancel: ");
+                    System.out.println(pos);
+                    deleteFriendRequest(pos);
+                    getFriendsRequestsOut();
+                });
+                panel.add(new JLabel(username));
+                panel.add(cancel);
+
+                friendsRequestsOutPanel.add(panel);
+                friendsRequestsOutPanel.revalidate();
+            }
+            friendsRequestsOutPanel.repaint();
         }
     }
 
@@ -101,7 +142,7 @@ public class Home {
         newsPanel.setLayout(new BoxLayout(newsPanel, BoxLayout.Y_AXIS));
         chatsPanel.setLayout(new BoxLayout(chatsPanel, BoxLayout.Y_AXIS));
         friendsPanel.setLayout(new BoxLayout(friendsPanel, BoxLayout.Y_AXIS));
-        friendsRequestsPanel.setLayout(new BoxLayout(friendsRequestsPanel, BoxLayout.Y_AXIS));
+        friendsRequestsInPanel.setLayout(new BoxLayout(friendsRequestsInPanel, BoxLayout.Y_AXIS));
 
         Main.profile = new User(0, getProfileName(), getProfileAddress(), getProfilePublicKey());
         if (Main.profile.address == null) {
@@ -117,8 +158,8 @@ public class Home {
         }
 
         getFriends();
-        getFriendsRequests();
-//        connectToFriends();
+        getFriendsRequestsIn();
+        getFriendsRequestsOut();
 
         addFriendButton.addActionListener(e -> {
             AddFriend dialog = new AddFriend();
