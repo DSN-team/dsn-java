@@ -6,6 +6,8 @@ import dsn.User;
 
 import javax.swing.*;
 
+import java.util.Arrays;
+
 import static com.dsnteam.dsn.CoreManager.*;
 
 public class Home {
@@ -36,6 +38,7 @@ public class Home {
     }
 
     private void getFriends() {
+        Main.profile.friends.clear();
         long count = loadFriends();
         if (count > 0) {
             long[] ids = getFriendsIds();
@@ -66,8 +69,8 @@ public class Home {
 
     private void getFriendsRequestsIn() {
         String[] usernames = CoreManager.getFriendsRequestsIn();
+        friendsRequestsInPanel.removeAll();
         if (usernames.length > 0) {
-            friendsRequestsInPanel.removeAll();
             for (int i = 0; i < usernames.length; i++) {
                 String username = usernames[i];
                 JPanel panel = new JPanel();
@@ -97,14 +100,14 @@ public class Home {
                 friendsRequestsInPanel.add(panel);
                 friendsRequestsInPanel.revalidate();
             }
-            friendsRequestsInPanel.repaint();
         }
+        friendsRequestsInPanel.repaint();
     }
 
     private void getFriendsRequestsOut() {
         String[] usernames = CoreManager.getFriendsRequestsOut();
+        friendsRequestsOutPanel.removeAll();
         if (usernames.length > 0) {
-            friendsRequestsOutPanel.removeAll();
             for (int i = 0; i < usernames.length; i++) {
                 String username = usernames[i];
                 JPanel panel = new JPanel();
@@ -123,8 +126,8 @@ public class Home {
                 friendsRequestsOutPanel.add(panel);
                 friendsRequestsOutPanel.revalidate();
             }
-            friendsRequestsOutPanel.repaint();
         }
+        friendsRequestsOutPanel.repaint();
     }
 
     public Home(JFrame frame) {

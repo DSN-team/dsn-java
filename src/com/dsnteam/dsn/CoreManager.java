@@ -29,12 +29,12 @@ public class CoreManager {
                     System.out.println(Main.chatID);
                 }
             }
-            case 3 -> { // request network
+            case 3, 4 -> { // request answer
                 System.out.print("requests update call back id ");
                 System.out.println(id);
                 Main.home.updateCallback(getSize);
             }
-            default -> throw new IllegalStateException("Unexpected value: " + requestType);
+            default -> new IllegalStateException("Unexpected value: " + requestType).printStackTrace();
         }
         Main.callBackBuffer.position(1);
     }
