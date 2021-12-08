@@ -1,7 +1,12 @@
 package dsn.ui;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.event.*;
+import java.io.IOException;
 
 import static com.dsnteam.dsn.CoreManager.*;
 
@@ -10,6 +15,7 @@ public class AddFriend extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextField keyText;
+    private JButton addFromBuffer;
     private JTextArea publicKeyText;
     private JTextField friendNameText;
 
@@ -32,10 +38,21 @@ public class AddFriend extends JDialog {
 
         // call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        addFromBuffer.addActionListener(e -> {
+            Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            try {
+                String str = (String) clipboard.getData(DataFlavor.stringFlavor);
+                if(str != null) {
+                    addFriend(str);
+                    dispose();
+                }
+            } catch (UnsupportedFlavorException | IOException ex) {
+                ex.printStackTrace();
+            }
+        });
     }
 
     private void onOK() {
-        // add your code here
         addFriend(keyText.getText());
         dispose();
     }
