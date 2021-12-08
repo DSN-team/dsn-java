@@ -25,15 +25,15 @@ public class Chat {
 
     public void updateCallback(int size) {
         System.out.println("buffer:" + callBackBuffer);
-        callBackBuffer.position(0);
+        callBackBuffer.position(1);
         callBackBuffer.limit(size);
         String msg = StandardCharsets.UTF_16.decode(callBackBuffer).toString();
-        callBackBuffer.position(0);
+        callBackBuffer.position(1);
         System.out.println("Got callback msg is:" + msg);
         callBackBuffer.limit(64);
-        byte[] bytes = new byte[64];
+        byte[] bytes = new byte[63];
         callBackBuffer.get(bytes);
-        callBackBuffer.position(0);
+        callBackBuffer.position(1);
         System.out.println("Got callback buffer is:" + Arrays.toString(bytes));
         addMessage(friendName.getText(), msg);
     }
@@ -76,7 +76,7 @@ public class Chat {
             System.out.println("Byte buffer pos:" + byteBuffer.position());
             System.out.print("Friend id:");
             System.out.println(friend.id);
-            writeBytes(byteBuffer, bytes.length, friend.id);
+            writeBytes(byteBuffer, bytes.length+1, friend.id);
 
             addMessage(profile.username, input.getText());
 
