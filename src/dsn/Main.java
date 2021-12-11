@@ -26,6 +26,11 @@ public class Main {
             CoreManager.loadLibrary();
         } catch (Exception ignored) {
         }
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
         CoreManager.initDB();
         JFrame frame = new JFrame("Dsn Auth");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
